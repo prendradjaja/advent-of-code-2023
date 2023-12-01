@@ -1,1 +1,6 @@
 in
+
+# Ignore Makefiles in problem directories, but don't ignore the Makefile in
+# the root directory
+Makefile
+!/Makefile
