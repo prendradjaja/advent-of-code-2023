@@ -9,6 +9,15 @@ import sys
 
 
 NUMBERS = {
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5',
+    '6': '6',
+    '7': '7',
+    '8': '8',
+    '9': '9',
     'one': '1',
     'two': '2',
     'three': '3',
@@ -24,19 +33,15 @@ NUMBERS = {
 def main():
     answer = 0
     for line in open(sys.argv[1]).read().splitlines():
-        digits = {
-            i: ch
-            for i, ch in enumerate(line)
-            if ch in string.digits
-        }
+        digits = []
 
-        for word, n in NUMBERS.items():
-            for i in indices(line, word):
-                assert i not in digits
-                digits[i] = n
+        for i in range(len(line)):
+            for word in NUMBERS:
+                if word == line[i : i+len(word)]:
+                    digits.append(NUMBERS[word])
 
-        first_digit = digits[min(digits)]
-        last_digit = digits[max(digits)]
+        first_digit = digits[0]
+        last_digit = digits[-1]
 
         calibration_value = int(
             first_digit +
@@ -46,20 +51,6 @@ def main():
         answer += calibration_value
 
     print(answer)
-
-
-def indices(haystack, needle):
-    '''
-    >>> indices('-wowow-', 'wow')
-    [1, 3]
-    >>> indices('-wowow-', 'nope')
-    []
-    '''
-    result = []
-    for i in range(len(haystack)):
-        if haystack[i : i+len(needle)] == needle:
-            result.append(i)
-    return result
 
 
 if __name__ == '__main__':
