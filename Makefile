@@ -11,14 +11,14 @@
 SHELL=/bin/bash
 
 run:
-	@python3 s.py in
+	@./s.py in
 
 test:
 	clear
-	python3 -m doctest s.py
+	python3.12 -m doctest s.py
 
 copy-last:
-	python3 s.py | tee >(tail -n1 | pbcopy)
+	./s.py | tee >(tail -n1 | pbcopy)
 
 example:
-	@python3 s.py ex
+	@./s.py ex
