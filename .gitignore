@@ -4,3 +4,6 @@ in
 # the root directory
 Makefile
 !/Makefile
+
+*.pyc
+__pycache__/
