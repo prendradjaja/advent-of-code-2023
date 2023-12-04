@@ -29,12 +29,10 @@ solveLine card =
   & dropWhile (/= ':')
   & drop 1
 
-  -- Split on '|'
+  -- Split on '|' and parse ints
   & map (\c -> if c == '|' then '\n' else c)
   & lines
-
-  -- Parse ints
-  & map (words >>> map readInt >>> Set.fromList)
+  & map readIntsToSets
 
   -- Count matches
   & \[winners, chosen] -> Set.intersection winners chosen
@@ -46,5 +44,12 @@ solveLine card =
       then 0
       else 2 ^ (matches - 1)
 
+
+-- e.g. readIntsToSets "1 2 3" == Set.fromList [1, 2, 3]
+readIntsToSets s =
+  s
+  & words
+  & map readInt
+  & Set.fromList
 
 readInt = read :: String -> Int
