@@ -51,4 +51,5 @@ readIntsToSets s =
   & map readInt
   & Set.fromList
 
+
 readInt = read :: String -> Int
