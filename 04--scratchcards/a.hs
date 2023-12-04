@@ -4,7 +4,6 @@
 --   ./b.hs PATH_TO_INPUT_FILE
 
 import Data.Function ((&))
-import Control.Arrow ((>>>))
 import System.Environment (getArgs)
 import qualified Data.Set as Set
 
