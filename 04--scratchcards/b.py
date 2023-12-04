@@ -24,7 +24,7 @@ def main():
     for i, card in enumerate(cards):
         next_idx = i + 1
         for j in range(next_idx, next_idx + card.matches):
-            # Copy cards[j] once for every copy of card[i]
+            # Copy cards[j] once for every copy of cards[i]
             cards[j].count += card.count
 
     answer = sum(card.count for card in cards)
