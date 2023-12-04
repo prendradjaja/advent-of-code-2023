@@ -8,21 +8,20 @@ Usage:
 from sscanf import sscanf
 
 import sys
+from dataclasses import dataclass
 
 
 def main():
-    winning_sets = []
-    chosen_sets = []
+    cards = []
     for line in open(sys.argv[1]).read().splitlines():
-        _, winning_set, chosen_set = sscanf(line, 'Card %s: %s | %s')
-        winning_set = {int(n) for n in winning_set.strip().split()}
-        chosen_set = {int(n) for n in chosen_set.strip().split()}
-        winning_sets.append(winning_set)
-        chosen_sets.append(chosen_set)
+        _, winners, chosen = sscanf(line, 'Card %s: %s | %s')
+        winners = {int(n) for n in winners.strip().split()}
+        chosen = {int(n) for n in chosen.strip().split()}
+        cards.append(Card(winners, chosen))
 
     answer = 0
-    for winners, chosen in zip(winning_sets, chosen_sets):
-        matches = len(winners & chosen)
+    for card in cards:
+        matches = len(card.winners & card.chosen)
         if matches:
             points = 2 ** (matches - 1)
         else:
@@ -30,6 +29,12 @@ def main():
         answer += points
 
     print(answer)
+
+
+@dataclass
+class Card:
+    winners: set[int]
+    chosen: set[int]
 
 
 if __name__ == '__main__':
