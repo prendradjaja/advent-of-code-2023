@@ -31,7 +31,7 @@ solveLine card =
   -- Split on '|' and parse ints
   & map (\c -> if c == '|' then '\n' else c)
   & lines
-  & map readIntsToSets
+  & map readIntsToSet
 
   -- Count matches
   & \[winners, chosen] -> Set.intersection winners chosen
@@ -44,8 +44,8 @@ solveLine card =
       else 2 ^ (matches - 1)
 
 
--- e.g. readIntsToSets "1 2 3" == Set.fromList [1, 2, 3]
-readIntsToSets s =
+-- e.g. readIntsToSet "1 2 3" == Set.fromList [1, 2, 3]
+readIntsToSet s =
   s
   & words
   & map readInt
