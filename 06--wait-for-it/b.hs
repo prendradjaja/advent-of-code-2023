@@ -10,6 +10,7 @@ import System.Environment (getArgs)
 main = do
   [inputPath] <- getArgs
   text <- readFile inputPath
+  putStrLn "Warning: If you're running b.hs on the puzzle input with runhaskell (interpreter), that will be slow. (Use `make build-haskell` and `make run-haskell` instead.)"
   print $ solve text
 
 
