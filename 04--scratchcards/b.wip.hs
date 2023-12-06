@@ -12,6 +12,8 @@ import Data.Map ((!))
 
 -- WIP: All the parts are implemented, but there's a bug somewhere (wrong
 -- answer)
+--
+-- Use b.verbose.py as a debugging aid
 main = do
   [inputPath] <- getArgs
   text <- readFile inputPath
