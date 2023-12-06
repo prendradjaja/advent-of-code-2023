@@ -1,19 +1,16 @@
 #!/usr/bin/env runhaskell
 -- Usage:
---   ./a.hs PATH_TO_INPUT_FILE
 --   ./b.hs PATH_TO_INPUT_FILE
 
+import Control.Arrow ((>>>))
 import Data.Function ((&))
 import System.Environment (getArgs)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import Data.Map ((!))
+import Data.Maybe (fromJust)
 
 
--- WIP: All the parts are implemented, but there's a bug somewhere (wrong
--- answer)
---
--- Use b.verbose.py as a debugging aid
 main = do
   [inputPath] <- getArgs
   text <- readFile inputPath
@@ -41,8 +38,10 @@ solve text =
             nextIndex = i + 1
             toCopy = -- List of card numbers to make copies of (possibly empty)
               [nextIndex .. (nextIndex + currMatchCount - 1)]
+            countCopiesOfCurrentCard =
+              fromJust $ Map.lookup i accCardCounts
           in
-            copyCards currMatchCount toCopy accCardCounts
+            copyCards countCopiesOfCurrentCard toCopy accCardCounts
         )
         initialCardCounts
         (zip [1..] matchCounts)
