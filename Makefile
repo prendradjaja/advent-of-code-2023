@@ -18,7 +18,7 @@ test:
 	python3.12 -m doctest s.py
 
 copy-last:
-	./s.py | tee >(tail -n1 | pbcopy)
+	./s.py in | tee >(tail -n1 | pbcopy)
 
 example:
 	@./s.py ex
