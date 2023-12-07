@@ -24,12 +24,14 @@ class HandType(Enum):
 
 
 def main():
+    # Parse
     hands = []
     for line in open(sys.argv[1]).read().splitlines():
         cards, bid = line.split()
         bid = int(bid)
         hands.append(Hand(cards, bid))
 
+    # Sort
     sorted_hands = sorted(
         hands,
         key = lambda hand: (
@@ -38,6 +40,7 @@ def main():
         )
     )
 
+    # Count winnings
     answer = sum(
         rank * hand.bid
         for rank, hand in enumerate(sorted_hands, start=1)

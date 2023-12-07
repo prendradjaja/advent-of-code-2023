@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 '''
+This version has a smallish performance optimization vs b.py (compare
+resolve_jokers() implementations).
+
+It's not necessary for solving the puzzle input, but on larger inputs it could
+make a difference. Even on the puzzle input, it makes the difference between
+0.1sec runtime (b.faster.py) and 1sec runtime (b.py) on my machine.
+
+Another obvious place for further optimization: fill_slots() will turn e.g.
+KQTJJ into both KQTKQ and KQTQK, which is not necessary since they are
+permutations of each other.
+
+
 Usage:
-    ./b.py PATH_TO_INPUT_FILE
+    ./b.faster.py PATH_TO_INPUT_FILE
 '''
 
 import sys
@@ -49,8 +61,13 @@ def main():
 
 
 def resolve_jokers(cards):
+    if 'J' not in cards:
+        return cards
+
+    non_jokers = {c for c in cards if c != 'J'}
+    choose_from = non_jokers or {'2'}  # 2 is just an arbitrary card
     return max(
-        fill_slots(cards, 'AKQT98765432', 'J'),
+        fill_slots(cards, choose_from, 'J'),
         key = lambda cards: get_hand_type(cards).value
     )
 
