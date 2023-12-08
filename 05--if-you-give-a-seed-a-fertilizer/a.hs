@@ -58,23 +58,21 @@ parseMap text =
   & map (\line -> line & words & map readInt)
 
 
-toFunction mapData = mapFunction mapData
-
-
-mapFunction mapData x
-  | any (\range -> rangeContains range x) srcRanges
-    =
-      let
-        srcRange = firstBy (\range -> rangeContains range x) srcRanges
-        dstRange =
-          elemIndex srcRange srcRanges
-          & fromJust
-          & (\i -> dstRanges !! i)
-        idx = x - (start srcRange)
-      in
-        (start dstRange) + idx
-  | otherwise
-    = x
+toFunction mapData =
+  (\x ->
+    case (any (\range -> rangeContains range x) srcRanges) of
+      True ->
+        let
+          srcRange = firstBy (\range -> rangeContains range x) srcRanges
+          dstRange =
+            elemIndex srcRange srcRanges
+            & fromJust
+            & (\i -> dstRanges !! i)
+          idx = x - (start srcRange)
+        in
+          (start dstRange) + idx
+      False -> x
+  )
   where
     srcRanges =
       mapData
