@@ -16,8 +16,9 @@ Key idea & thought process for this problem:
   small cycles to make one long cycle that would take too long to simulate in
   full.
 
-(As an aside, I'm pretty sure this "LCM of cycle lengths" trick has come up in
-another Advent of Code problem. I can't remember which.)
+Fun fact: This trick (multiple cycles combining together to make one very-long
+cycle) has been used at least once before in Advent of Code: (spoiler for a
+past year, decode with rot13) lrne gjragl avargrra qnl gjryir cneg gjb
 
 
 Usage:
