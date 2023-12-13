@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Look at `diff a2.py b.py`, not `diff a.py b.py`
+Look at `diff a2.py b.py`, not `diff a.py b.py`.
 
 Usage:
     ./a.py PATH_TO_INPUT_FILE
@@ -15,18 +15,23 @@ def main():
         for paragraph in open(sys.argv[1]).read().split('\n\n')
     ]
 
-    answer = 0
-    for each in patterns:
-        has_horizontal_axis, axis = find_horizontal_axis(each)
-        if has_horizontal_axis:
-            answer += 100 * axis
-            continue
-
-        has_vertical_axis, axis = find_vertical_axis(each)
-        if has_vertical_axis:
-            answer += axis
-
+    answer = sum(
+        find_axis_number(each)
+        for each in patterns
+    )
     print(answer)
+
+
+def find_axis_number(pattern):
+    has_horizontal_axis, axis = find_horizontal_axis(pattern)
+    if has_horizontal_axis:
+        return 100 * axis
+
+    has_vertical_axis, axis = find_vertical_axis(pattern)
+    if has_vertical_axis:
+        return axis
+
+    return 0
 
 
 def find_horizontal_axis(pattern):
