@@ -11,8 +11,7 @@ Install:
 
 Usage:
     Must have installed numpy first (see above)
-    ./a.py PATH_TO_INPUT_FILE
-    ./b.py PATH_TO_INPUT_FILE
+    ./b.numpy.py PATH_TO_INPUT_FILE
 '''
 
 import sys
