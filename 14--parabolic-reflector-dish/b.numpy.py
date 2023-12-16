@@ -1,7 +1,5 @@
 #!./numpy_env/bin/python3
 '''
-WIP: Works for example input but not puzzle input.
-
 Alternate solution using numpy.
 
 Install:
@@ -32,7 +30,7 @@ def main():
         tilt_south(grid)
         tilt_east(grid)
 
-        time_machine.append(n, total_load(grid), str(grid))
+        time_machine.append(n, total_load(grid), to_full_string(grid))
 
         if time_machine.period is not None:
             break
@@ -87,6 +85,11 @@ def total_load(grid):
         for i, ch in enumerate(grid[::-1,c], start=1)
         if ch == 'O'
     )
+
+def to_full_string(numpy_array):
+    with np.printoptions(threshold=np.inf):
+        return str(numpy_array)
+
 
 
 LogEntry = namedtuple('LogEntry', 'x y signature')
