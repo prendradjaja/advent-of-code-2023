@@ -39,6 +39,16 @@ def main():
     print(answer)
 
 
+def total_load(grid):
+    HEIGHT, WIDTH = grid.shape
+    return sum(
+        i
+        for c in range(WIDTH)
+        for i, ch in enumerate(grid[::-1,c], start=1)
+        if ch == 'O'
+    )
+
+
 def tilt_north(grid):
     HEIGHT, WIDTH = grid.shape
     for c in range(WIDTH):
@@ -77,19 +87,9 @@ def tilt_chunk(chunk, towards_direction):
     return ''.join(sorted(chunk, reverse=reverse))
 
 
-def total_load(grid):
-    HEIGHT, WIDTH = grid.shape
-    return sum(
-        i
-        for c in range(WIDTH)
-        for i, ch in enumerate(grid[::-1,c], start=1)
-        if ch == 'O'
-    )
-
 def to_full_string(numpy_array):
     with np.printoptions(threshold=np.inf):
         return str(numpy_array)
-
 
 
 LogEntry = namedtuple('LogEntry', 'x y signature')
