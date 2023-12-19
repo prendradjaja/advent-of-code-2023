@@ -2,7 +2,8 @@
 
 # Usage:
 #     ./b.py PATH_TO_INPUT_FILE
-#
+#     ./b.py PATH_TO_INPUT_FILE -t
+#         # To display the tree
 #
 # Explanation:
 #
@@ -58,11 +59,15 @@ import math
 
 def main():
     workflows, all_parts = open(sys.argv[1]).read().split('\n\n')
+    show_tree = '-t' in sys.argv
 
     all_parts = parse_parts(all_parts)
     workflows = parse_workflows(workflows)
 
     root = make_tree(workflows, 'in', 0)
+
+    if show_tree:
+        print(root)
 
     answer = 0
     for *path, result in traverse_tree(root, []):
