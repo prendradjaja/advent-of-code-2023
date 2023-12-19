@@ -9,6 +9,7 @@ import sys
 import re
 import itertools
 from dataclasses import dataclass
+import time
 
 
 def main():
@@ -31,6 +32,7 @@ def main():
 
     answer = 0
     expected_iterations = len(ranges['x']) * len(ranges['m']) * len(ranges['a']) * len(ranges['s'])
+    estimator = RemainingTimeEstimator(expected_iterations)
     n = 0
     for x in ranges['x']:
         for m in ranges['m']:
@@ -47,7 +49,7 @@ def main():
                         answer += group_size
                     n += 1
                     if n % 100_000 == 0:
-                        print(f'Working... completed {n:,} of {expected_iterations:,} iterations ({n / expected_iterations:.5%})')
+                        print(f'Working... completed {n:,} of {expected_iterations:,} iterations ({n / expected_iterations:.5%}. Remaining: About {estimator.estimate_human(n)})')
 
     # Estimated runtime: 44 hours
     print(answer)
@@ -144,6 +146,34 @@ class Condition:
         elif self.operator == '<':
             return workflow[self.var_name] < self.value
         raise Exception('unreachable case')
+
+
+class RemainingTimeEstimator:
+    def __init__(self, expected_iterations):
+        self.expected_iterations = expected_iterations
+        self.start = time.time()
+
+    def estimate(self, current_iteration):
+        fraction_complete = current_iteration / self.expected_iterations
+        elapsed_seconds = time.time() - self.start
+        estimated_total = elapsed_seconds / fraction_complete
+        return estimated_total * (1 - fraction_complete)
+
+    def estimate_human(self, current_iteration):
+        seconds = self.estimate(current_iteration)
+        if seconds < 60:
+            return f'{seconds:.1f} sec'
+
+        minutes = seconds / 60
+        if minutes < 60:
+            return f'{minutes:.1f} min'
+
+        hours = minutes / 60
+        if hours < 24:
+            return f'{hours:.1f} hours'
+
+        days = hours / 24
+        return f'{days:.1f} days'
 
 
 if __name__ == '__main__':
