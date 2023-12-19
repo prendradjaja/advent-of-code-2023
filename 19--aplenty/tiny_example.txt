@@ -1,0 +1,8 @@
+in{x>10:bigx,smallx}
+bigx{m>10:R,A}
+smallx{m>10:A,R}
+
+{x=1,m=1,a=1,s=1}
+{x=100,m=1,a=1,s=1}
+{x=1,m=100,a=1,s=1}
+{x=100,m=100,a=1,s=1}
