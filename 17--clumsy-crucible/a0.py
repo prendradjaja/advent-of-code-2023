@@ -26,6 +26,13 @@ REPEAT_LIMIT = 3
 
 def main():
     def neighbors(node):
+        '''
+        A node is represented as
+
+        - the string 'start', or
+        - the string 'end', or
+        - a Node object
+        '''
         if node == 'start':
             for direction in [DOWN, RIGHT]:
                 pos = direction
