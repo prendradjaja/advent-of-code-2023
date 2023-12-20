@@ -23,10 +23,21 @@ DIRECTIONS = [
 
 REPEAT_LIMIT = 3
 
-# TODO Change start node representation. Add a special case to neighbors
 
 def main():
     def neighbors(node):
+        if node == 'start':
+            for direction in [DOWN, RIGHT]:
+                pos = direction
+                new_node = Node(
+                    pos,
+                    direction,
+                    1
+                )
+                distance = getindex(world, pos)
+                yield (distance, new_node, None)
+            return
+
         if node.pos == (height - 1, width - 1):
             yield (0, 'end', None)
             return
@@ -61,11 +72,7 @@ def main():
         [int(n) for n in line]
         for line in open(sys.argv[1]).read().splitlines()
     ]
-    start = Node(
-        (0, 0),
-        DOWN,
-        0
-    )
+    start = 'start'
     target = 'end'
 
     height = len(world)
