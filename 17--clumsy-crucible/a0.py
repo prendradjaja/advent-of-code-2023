@@ -9,7 +9,7 @@ import sys
 from collections import namedtuple
 
 # TODO Make my own implementation of Dijkstra's algorithm
-from dijkstra_gribouillis_fork import Dijkstra
+from dijkstra_gribouillis import Dijkstra
 
 
 Node = namedtuple('Node', 'pos last_direction repeat_count')
@@ -23,9 +23,14 @@ DIRECTIONS = [
 
 REPEAT_LIMIT = 3
 
+# TODO Change start node representation. Add a special case to neighbors
 
 def main():
     def neighbors(node):
+        if node.pos == (height - 1, width - 1):
+            yield (0, 'end', None)
+            return
+
         for offset in DIRECTIONS:
             new_pos = addvec(node.pos, offset)
             is_opposite_direction = (0, 0) == addvec(node.last_direction, offset)
@@ -61,22 +66,21 @@ def main():
         DOWN,
         0
     )
+    target = 'end'
 
     height = len(world)
     width = len(world[0])
-
-    is_target = lambda node: node.pos == (height - 1, width - 1)
 
     d = Dijkstra(
         start,
         neighbors,
         maxitems=None,
         maxdist=None,
-        is_target=is_target
+        target=target
     )
 
-    for target in d.targets:
-        print(d[target].dist, d.is_shortest(target))
+    assert d.is_shortest(target)
+    print(d[target].dist)
 
 
 def in_bounds(grid, pos):
