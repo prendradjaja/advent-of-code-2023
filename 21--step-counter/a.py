@@ -36,7 +36,7 @@ def iterate(world, reachable):
     def neighbors(pos):
         for offset in DIRECTIONS:
             pos2 = addvec(pos, offset)
-            if in_bounds(world, pos2) and getindex(world, pos2) != '#':
+            if in_bounds(world, pos2) and getitem(world, pos2) != '#':
                 yield pos2
 
     return {
@@ -46,7 +46,7 @@ def iterate(world, reachable):
     }
 
 
-def getindex(grid, pos):
+def getitem(grid, pos):
     assert in_bounds(grid, pos)
     r, c = pos
     return grid[r][c]

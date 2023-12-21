@@ -31,7 +31,7 @@ def main():
         if ch == 'S':
             start_pos = pos
     start_pipe = get_start_tile_type()
-    setindex(world, start_pos, start_pipe)
+    setitem(world, start_pos, start_pipe)
 
     # Solve
     distances = find_distances_bfs(world, start_pos)
@@ -60,7 +60,7 @@ def find_distances_bfs(world, node):
 
 
 def get_connected_pipes(world, pos):
-    ch = getindex(world, pos)
+    ch = getitem(world, pos)
     return [addvec(pos, d) for d in PIPE_DIRECTIONS[ch]]
 
 
@@ -78,7 +78,7 @@ def addvec(v, w):
     return tuple(a + b for a, b in zip(v, w))
 
 
-def getindex(grid, pos):
+def getitem(grid, pos):
     r, c = pos
     assert (
         0 <= r < len(grid) and
@@ -87,7 +87,7 @@ def getindex(grid, pos):
     return grid[r][c]
 
 
-def setindex(grid, pos, value):
+def setitem(grid, pos, value):
     r, c = pos
     assert (
         0 <= r < len(grid) and

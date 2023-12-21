@@ -41,7 +41,7 @@ def main():
                     direction,
                     1
                 )
-                distance = getindex(world, pos)
+                distance = getitem(world, pos)
                 yield (distance, new_node, None)
             return
 
@@ -62,7 +62,7 @@ def main():
                     offset,
                     1
                 )
-                distance = getindex(world, new_pos)
+                distance = getitem(world, new_pos)
                 yield (distance, new_node, None)
             else:
                 if node.repeat_count == REPEAT_LIMIT:
@@ -72,7 +72,7 @@ def main():
                         pos = new_pos,
                         repeat_count = node.repeat_count + 1
                     )
-                    distance = getindex(world, new_pos)
+                    distance = getitem(world, new_pos)
                     yield (distance, new_node, None)
 
     world = [
@@ -105,7 +105,7 @@ def in_bounds(grid, pos):
     )
 
 
-def getindex(grid, pos):
+def getitem(grid, pos):
     assert in_bounds(grid, pos)
     r, c = pos
     return grid[r][c]

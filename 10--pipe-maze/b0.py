@@ -40,13 +40,13 @@ def main():
                     visited.add(v)
                     q.append(v)
     def visit(node, parent):
-        plain_world[node] = getindex(world, node)
+        plain_world[node] = getitem(world, node)
         distances[node] = distances[parent] + 1
     def neighbors(node):
-        ch = getindex(world, node)
+        ch = getitem(world, node)
         if ch == 'S':
             ch = get_start_tile_type()
-        directions = LEGAL_DIRECTIONS[ch]
+        directions = PIPE_DIRECTIONS[ch]
         for d in directions:
             npos = addvec(node, d)
             yield npos
@@ -143,7 +143,7 @@ def subvec(v, w):
     return tuple(a - b for a, b in zip(v, w))
 
 
-def getindex(grid, pos):
+def getitem(grid, pos):
     r, c = pos
     assert (
         0 <= r < len(grid) and
