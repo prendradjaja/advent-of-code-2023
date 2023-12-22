@@ -1,0 +1,19 @@
+>>> from a_wip import *
+>>> bricks = []
+>>> for line in open('./ex').read().splitlines():
+...     start, end = line.split('~')
+...     start = ast.literal_eval(start)
+...     end = ast.literal_eval(end)
+...     bricks.append(Brick(start, end))
+>>> show(bricks, X)
+.#. 9
+.#. 8
+... 7
+### 6
+..# 5
+#.. 4
+### 3
+### 2
+.#. 1
+... 0
+<BLANKLINE>

@@ -15,6 +15,10 @@ X, Y, Z = 0, 1, 2
 DOWN = (0, 0, -1)
 
 
+# TODO There are various todo-optim comments. First one to start with is
+# definitely the collision map.
+
+
 def main():
     '''
     >>> import unittest.mock
@@ -29,6 +33,7 @@ def main():
         end = ast.literal_eval(end)
         bricks.append(Brick(start, end))
 
+    # print([each.start[Z] for each in bricks])
     fall(bricks)
 
     answer = 0
@@ -76,6 +81,7 @@ def fall(bricks):
                 changed_inner = True
                 changed = True
 
+        # print([each.start[Z] for each in bricks])
         if not changed_inner:
             return changed
 
@@ -140,6 +146,33 @@ class Brick:
             addvec(self.start, DOWN),
             addvec(self.end, DOWN)
         )
+
+
+def show(bricks, ltr_axis):
+    assert ltr_axis in [0, 1]
+
+    # Names:
+    # - A (or a) is the ltr_axis
+    # - B (or b) is the other axis (neither A nor Z, but the other one)
+
+    A = ltr_axis
+    B = int(not A)
+
+    foo = {
+        (cube[A], cube[Z])
+        for brick in bricks
+        for cube in brick.cubes
+    }
+
+    for z in range(9, -1, -1):
+        for a in range(3):
+            if (a, z) in foo:
+                ch = '#'
+            else:
+                ch = '.'
+            print(ch, end='')
+        print('', z)
+    print()
 
 
 if __name__ == '__main__':
