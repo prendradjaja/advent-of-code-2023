@@ -15,10 +15,6 @@ X, Y, Z = 0, 1, 2
 DOWN = (0, 0, -1)
 
 
-# TODO There are various todo-optim comments. First one to start with is
-# definitely the collision map.
-
-
 def main():
     '''
     >>> import unittest.mock
@@ -26,34 +22,47 @@ def main():
     ...    main()
     5
     '''
-    bricks = []
+    world = CollisionWorld()
     for line in open(sys.argv[1]).read().splitlines():
         start, end = line.split('~')
         start = ast.literal_eval(start)
         end = ast.literal_eval(end)
-        bricks.append(Brick(start, end))
+        world.add_brick(Brick(start, end))
 
-    # print([each.start[Z] for each in bricks])
-    fall(bricks)
+    world.show(X, 0, 9)
 
+    fall(world)
+
+    world.show(X, 0, 9)
+
+    # todo-optim
     answer = 0
-    for brick in bricks:
-        other_bricks = [b for b in bricks if b != brick]
-        assert len(other_bricks) == len(bricks) - 1
-
-        # n.b. It's ok to mutate other_bricks since (1) it's a copy and
-        # (2) applying gravity to `other_bricks` with `fall()` doesn't affect
-        # `bricks` because applying a gravity to one brick with
-        # `Brick.fall1_copy()` doesn't modify the bricks.
-        changed = fall(other_bricks)
-        if not changed:
+    for i in range(len(world.bricks)):
+        if i % 10 == 0:
+            print('...', i)
+        if can_remove(world, i):
             answer += 1
 
     print(answer)
 
 
-def fall(bricks):
-    def can_fall1(brick):
+def can_remove(world, brick_idx):
+    world2 = CollisionWorld()
+    for i in range(len(world.bricks)):
+        if i != brick_idx:
+            world2.add_brick(world.bricks[i])
+
+    # n.b. It's ok to mutate world2 since (1) it's a copy and (2) applying
+    # gravity to `world2` with `fall()` doesn't affect `world` because
+    # applying gravity to one brick with `Brick.fall1_copy()` doesn't modify
+    # the bricks.
+    changed = fall(world2)
+    return not changed
+
+
+def fall(world):
+    def can_fall1(world, idx):
+        brick = world.bricks[idx]
         brick2 = brick.fall1_copy()
         # todo-optim: Shouldn't need to loop through every brick to find a
         # collision. Make and maintain a collision map.
@@ -61,11 +70,7 @@ def fall(bricks):
             cube[Z] == 0
             for cube in brick2.cubes
         )
-        is_any_collision = is_ground_collision or any(
-            brick2.is_collision(other)
-            for other in bricks
-            if other != brick
-        )
+        is_any_collision = is_ground_collision or world.is_collision(idx, brick2)
         return not is_any_collision
 
     changed = False
@@ -73,15 +78,15 @@ def fall(bricks):
         # todo-optim: Probably sorting bricks by elevation (What does that
         # mean? Not obvious) before looping through them would help.
         changed_inner = False
-        for i, brick in enumerate(bricks):
-            if can_fall1(brick):
+        for i, brick in enumerate(world.bricks):
+            if can_fall1(world, i):
                 # todo-optim: Shouldn't need to fall by one unit repeatedly:
                 # Fall as many units as available.
-                bricks[i] = brick.fall1_copy()
+                world.replace_brick(i, brick.fall1_copy())
                 changed_inner = True
                 changed = True
 
-        # print([each.start[Z] for each in bricks])
+        # print([each.start[Z] for each in world.bricks])
         if not changed_inner:
             return changed
 
@@ -148,31 +153,61 @@ class Brick:
         )
 
 
-def show(bricks, ltr_axis, z_min, z_max):
-    assert ltr_axis in [0, 1]
+class CollisionWorld:
+    def __init__(self):
+        self.bricks = []
+        self.cubes = {}  # values are brick ids (indexes into self.bricks)
 
-    # Names:
-    # - A (or a) is the ltr_axis
-    # - B (or b) is the other axis (neither A nor Z, but the other one)
+    def is_collision(self, idx, new_brick):
+        for cube in new_brick.cubes:
+            found_brick = self.cubes.get(cube)
+            if found_brick is not None and found_brick != idx:
+                return True
+        return False
 
-    A = ltr_axis
-    B = int(not A)
+    def add_brick(self, brick):
+        idx = len(self.bricks)
+        self.bricks.append(brick)
+        for cube in brick.cubes:
+            assert cube not in self.cubes
+            self.cubes[cube] = idx
 
-    foo = {
-        (cube[A], cube[Z])
-        for brick in bricks
-        for cube in brick.cubes
-    }
+    def replace_brick(self, idx, new_brick):
+        brick = self.bricks[idx]
+        for cube in brick.cubes:
+            del self.cubes[cube]
 
-    for z in range(z_max, z_min-1, -1):
-        for a in range(3):
-            if (a, z) in foo:
-                ch = '#'
-            else:
-                ch = '.'
-            print(ch, end='')
-        print('', z)
-    print()
+        self.bricks[idx] = new_brick
+        for cube in new_brick.cubes:
+            assert cube not in self.cubes
+            self.cubes[cube] = idx
+
+
+    def show(self, ltr_axis, z_min, z_max):
+        assert ltr_axis in [0, 1]
+
+        # Names:
+        # - A (or a) is the ltr_axis
+        # - B (or b) is the other axis (neither A nor Z, but the other one)
+
+        A = ltr_axis
+        B = int(not A)
+
+        foo = {
+            (cube[A], cube[Z])
+            for brick in self.bricks
+            for cube in brick.cubes
+        }
+
+        for z in range(z_max, z_min-1, -1):
+            for a in range(3):
+                if (a, z) in foo:
+                    ch = '#'
+                else:
+                    ch = '.'
+                print(ch, end='')
+            print('', z)
+        print()
 
 
 if __name__ == '__main__':
