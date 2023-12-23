@@ -10,6 +10,7 @@ Try `diff common.py a.py` and `diff common.py b.py` instead of
 import sys
 from dataclasses import dataclass
 import ast
+import functools
 
 
 X, Y, Z = 0, 1, 2
@@ -45,9 +46,10 @@ class Brick:
     start: ...
     end: ...
 
-    def __post_init__(self):
+    @functools.cached_property
+    def cubes(self):
         '''
-        Adds self.cubes (the cubes that make up this brick)
+        Returns the cubes that make up this brick
 
         >>> Brick((0, 0, 0), (0, 0, 2)).cubes == frozenset([(0, 0, 0), (0, 0, 1), (0, 0, 2)])
         True
@@ -58,7 +60,7 @@ class Brick:
         while pos != self.end:
             pos = addvec(pos, delta)
             cubes.append(pos)
-        super().__setattr__('cubes', frozenset(cubes))
+        return frozenset(cubes)
 
     def fall_one_unit(self):
         return Brick(
