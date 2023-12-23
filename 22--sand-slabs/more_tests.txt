@@ -5,7 +5,7 @@
 ...     start = ast.literal_eval(start)
 ...     end = ast.literal_eval(end)
 ...     bricks.append(Brick(start, end))
->>> show(bricks, X)
+>>> show(bricks, X, 0, 9)
 .#. 9
 .#. 8
 ... 7
@@ -13,6 +13,17 @@
 ..# 5
 #.. 4
 ### 3
+### 2
+.#. 1
+... 0
+<BLANKLINE>
+>>> fall(bricks)
+True
+>>> show(bricks, X, 0, 6)
+.#. 6
+.#. 5
+### 4
+#.# 3
 ### 2
 .#. 1
 ... 0

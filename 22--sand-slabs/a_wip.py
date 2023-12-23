@@ -148,7 +148,7 @@ class Brick:
         )
 
 
-def show(bricks, ltr_axis):
+def show(bricks, ltr_axis, z_min, z_max):
     assert ltr_axis in [0, 1]
 
     # Names:
@@ -164,7 +164,7 @@ def show(bricks, ltr_axis):
         for cube in brick.cubes
     }
 
-    for z in range(9, -1, -1):
+    for z in range(z_max, z_min-1, -1):
         for a in range(3):
             if (a, z) in foo:
                 ch = '#'
