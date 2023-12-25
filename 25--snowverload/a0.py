@@ -12,8 +12,15 @@ import random
 import math
 
 
-# Maybe use Graphviz?
-# https://old.reddit.com/r/adventofcode/comments/18qcer7/2023_day_25_graphviz_rescues_once_again/
+# Other approaches to maybe try:
+# - Graphviz
+#   https://old.reddit.com/r/adventofcode/comments/18qcer7/2023_day_25_graphviz_rescues_once_again/
+# - Some linear algebra trick
+#   https://old.reddit.com/r/adventofcode/comments/18qbsxs/2023_day_25_solutions/keubcfd/
+# - Some min_cut alg from networkx
+#   https://old.reddit.com/r/adventofcode/comments/18qbsxs/2023_day_25_solutions/ketzt6h/
+# - "Grow a cluster of vertices around an initial seed, only add new vertices if at least two connections to the existing cluster"
+#   https://old.reddit.com/r/adventofcode/comments/18qcsux/2023_day_25_part_1_solve_by_visualization/keueqb8/
 
 
 def main():
