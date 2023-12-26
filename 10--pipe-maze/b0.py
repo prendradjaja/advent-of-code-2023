@@ -15,9 +15,7 @@ DIRECTIONS = [
     LEFT := (0, -1),
 ]
 
-PIPES = '|-LJ7F'
-
-LEGAL_DIRECTIONS = {
+PIPE_DIRECTIONS = {
     '|': [UP, DOWN],
     '-': [LEFT, RIGHT],
     'F': [DOWN, RIGHT],
